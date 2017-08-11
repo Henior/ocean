@@ -1,0 +1,1 @@
+package com.example.demo.dao;import com.example.demo.entity.UserEntity;public interface UserDao {    public void saveUser(UserEntity user);    public UserEntity findUserByUserName(String userName);    public void updateUser(UserEntity user);    public void deleteUserById(Long id);}

@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="UTF-8" />
+<title>openInstall!--$!{name}</title>
+</head>
+<body>
+#foreach($num in $!{nums})
+<button name="下载" id="downloadButton" style="width: 80px;height: 50px;align-items: center;background-image: url('button.jpg')">下载[$!{num}]--$!{velocityCount}</button>
+#end
+<!-- 强烈建议直接引用下面的cdn加速链接，以得到最及时的更新，我们将持续跟踪各种主流浏览器的变化，提供最好的服务；不推荐将此js文件下载到自己的服务器-->
+<script type="text/javascript" src="//res.cdn.openinstall.io/openinstall.js"></script>
+<script type="text/javascript">
+  //openinstall初始化，初始化时将与openinstall服务器交互，应尽可能早的调用
+  /*web页面向app传递的json数据(json string/js Object)，应用被拉起或是首次安装时，通过相应的android/ios api可以获取此数据*/
+  var data = OpenInstall.parseUrlParams();//openinstall.js中提供的工具函数，解析url中的所有查询参数
+  //开发者也可通过其他方式设置绑定数据
+  //var data = "{\"testKey\":\"testValue\"}";//可以是json string
+  var data = {"testKey":"testValue"};//也可以是js Object
+  var m = new OpenInstall({
+    /*appKey必选参数，openinstall平台为每个应用分配的ID*/
+    appKey : 'gmkbh8',
+    /*可选参数，自定义android平台的apk下载文件名，只有apk在openinstall托管时才有效；个别andriod浏览器下载时，中文文件名显示乱码，请慎用中文文件名！*/
+    apkFileName : "OpenInstallDemo-v2-1.1.1.apk"
+  }, data);
+
+
+  //用法1：如app已安装，进入网页立即拉起app；用户点击某个按钮时再开始安装app
+  /*通过scheme拉起app(如果已在openinstall平台开启scheme启动功能)*/
+  m.schemeWakeup();
+  /*用户点击某个按钮时(假定按钮id为downloadButton)，安装app;*/
+  document.getElementById("downloadButton").onclick = function() {
+    m.install();
+  }
+
+  //用法2：用户点击某个按钮拉起app，等待设定时间后app尚未拉起，再安装app
+  /*用户点击某个按钮时，安装app*/
+  //document.getElementById('downloadButton').onclick=function(){
+  //   //500毫秒后app尚未拉起，将安装app，可自定义超时时间，单位为毫秒
+  //   m.wakeupOrInstall({timeout:500});
+  //}
+</script>
+</body>
+</html>
